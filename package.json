@@ -1,0 +1,23 @@
+{
+  "name": "ktantan",
+  "version": "0.0.1",
+  "description": "a tiny analytics application",
+  "main": "app.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "author": "alex jablon <alex@jablon.me>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~3.5.0",
+    "async": "~0.2.10",
+    "redis": "~0.10.1",
+    "socket.io": "~0.9.16",
+    "rethinkdb": "~1.11.0-4"
+  },
+  "devDependencies": {
+    "gulp": "~3.5.5",
+    "gulp-concat": "~2.1.7",
+    "gulp-uglify": "~0.2.1"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+rethinkdb_data/
+conf.js
+*.swp
+js_data/all.min.js
