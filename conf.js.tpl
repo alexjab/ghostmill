@@ -1,7 +1,8 @@
 module.exports = {
   "server": {
     "host": 'localhost',
-    "port": 8001
+    "port": 8001,
+    "base_url": 'http://localhost:8001'
   },
   "auth": {
     "username": "admin",
