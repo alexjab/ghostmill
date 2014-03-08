@@ -8,15 +8,15 @@ init:
 	cp conf.js.tpl conf.js && gulp
 
 start:
-	forever start app.js && forever start core.js
+	forever start gm-app.js && forever start gm-core.js
 
 stop:
-	forever stop app.js && forever stop core.js
+	forever stop gm-app.js && forever stop gm-core.js
 
 kill:
-	forever kill app.js && forever kill core.js
+	forever kill gm-app.js && forever kill gm-core.js
 
 restart:
-	forever restart app.js && forever restart core.js
+	forever restart gm-app.js && forever restart gm-core.js
 
 .PHONY: install init start stop kill restart
