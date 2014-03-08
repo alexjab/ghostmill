@@ -4,8 +4,16 @@ install:
 install_globals:
 	npm install forever -g gulp -g
 
-init:
-	cp conf.js.tpl conf.js && gulp
+init: init_conf init_static init_db
+
+init_conf:
+	cp conf.js.tpl conf.js
+
+init_static:
+	gulp
+
+init_db:
+	node init_db.js
 
 start:
 	forever start gm-app.js && forever start gm-core.js
@@ -19,4 +27,4 @@ kill:
 restart:
 	forever restart gm-app.js && forever restart gm-core.js
 
-.PHONY: install init start stop kill restart
+.PHONY: install install_globals init start stop kill restart

@@ -2,10 +2,9 @@ var async = require ('async');
 var r = require('rethinkdb');
 
 var conn = null;
-r.connect ({host: 'localhost', port: 28015}, function (err, connection) {
+r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
   if (err) throw err;
   conn = connection;
-  conn.use('ktantan');
 });
 
 var get_view_count = exports.get_view_count = function (cb) {

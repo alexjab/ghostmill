@@ -5,10 +5,9 @@ var event_sub = redis.createClient ();
 event_sub.subscribe ('events');
 
 var conn = null;
-r.connect ({host: 'localhost', port: 28015}, function (err, connection) {
+r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
   if (err) throw err;
   conn = connection;
-  conn.use('ktantan');
 });
 
 event_sub.on ('message', function (channel, message) {
