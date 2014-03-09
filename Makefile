@@ -16,15 +16,18 @@ init_db:
 	node init_db.js
 
 start:
-	forever start gm-app.js && forever start gm-core.js
+	forever start ghostmill-app.js && forever start ghostmill-core.js
 
 stop:
-	forever stop gm-app.js && forever stop gm-core.js
+	forever stop ghostmill-app.js && forever stop ghostmill-core.js
 
 kill:
-	forever kill gm-app.js && forever kill gm-core.js
+	forever kill ghostmill-app.js && forever kill ghostmill-core.js
 
 restart:
-	forever restart gm-app.js && forever restart gm-core.js
+	forever restart ghostmill-app.js && forever restart ghostmill-core.js
 
-.PHONY: install install_globals init start stop kill restart
+test:
+	export NODE_ENV=test && mocha --ui bdd -R spec
+
+.PHONY: install install_globals init start stop kill restart test

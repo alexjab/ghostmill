@@ -1,6 +1,8 @@
 var async = require ('async');
 var r = require('rethinkdb');
 
+var event_tbl = process.env.NODE_ENV === 'test'?'test_events':'events';
+
 var conn = null;
 r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
   if (err) throw err;
@@ -10,7 +12,7 @@ r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, con
 var get_view_count = exports.get_view_count = function (cb) {
   var acc = {};
   r
-  .table ('events')
+  .table (event_tbl)
   .getAll ("view", {index: "type"})
   .pluck ("ip", "url")
   .distinct ()
@@ -37,7 +39,7 @@ var get_view_count = exports.get_view_count = function (cb) {
 var get_tick_count = exports.get_tick_count = function (cb) {
   var acc = {};
   r
-  .table ('events')
+  .table (event_tbl)
   .getAll ("tick", {index: "type"})
   .pluck ("ip", "url", "sel", "event")
   .distinct ()
@@ -67,3 +69,20 @@ var get_tick_count = exports.get_tick_count = function (cb) {
   });
 };
 
+var insert_event = exports.insert_event = function (_event, cb) {
+  r
+  .table (event_tbl)
+  .insert (_event)
+  .run (conn, function (err, stats) {
+    cb (err, stats);
+  });
+};
+
+var _get_event = exports._get_event = function (id, cb) {
+  r
+  .table (event_tbl)
+  .get (id)
+  .run (conn, function (err, _event) {
+    cb (err, _event);
+  });
+};

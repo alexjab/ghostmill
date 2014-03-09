@@ -32,7 +32,24 @@ async.series ([
   function (cb) {
     r
     .db ('ghostmill')
+    .tableCreate ('test_events')
+    .run (conn, function (err, stats) {
+      cb (err, stats);
+    });
+  },
+  function (cb) {
+    r
+    .db ('ghostmill')
     .table ('events')
+    .indexCreate ('type')
+    .run (conn, function (err, stats) {
+      cb (err, stats)
+    });
+  },
+  function (cb) {
+    r
+    .db ('ghostmill')
+    .table ('test_events')
     .indexCreate ('type')
     .run (conn, function (err, stats) {
       cb (err, stats)
