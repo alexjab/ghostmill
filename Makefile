@@ -2,7 +2,7 @@ install:
 	npm install
 
 install_globals:
-	npm install forever -g gulp -g
+	npm install forever -g gulp -g mocha -g
 
 init: init_conf init_static init_db
 
@@ -14,6 +14,8 @@ init_static:
 
 init_db:
 	node init_db.js
+
+all: install install_globals init
 
 start:
 	forever start ghostmill-app.js && forever start ghostmill-core.js

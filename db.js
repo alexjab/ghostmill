@@ -2,14 +2,18 @@ var async = require ('async');
 var r = require('rethinkdb');
 
 var event_tbl = process.env.NODE_ENV === 'test'?'test_events':'events';
+var conf_tbl = process.env.NODE_ENV === 'test'?'test_conf':'conf';
 
-var conn = null;
-r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
-  if (err) throw err;
-  conn = connection;
-});
+exports.init = function (callback) {
+  r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
+    if (!err) {
+      conn = connection;
+    }
+    callback (err, conn);
+  });
+};
 
-var get_view_count = exports.get_view_count = function (cb) {
+var get_view_count = exports.get_view_count = function (conn, cb) {
   var acc = {};
   r
   .table (event_tbl)
@@ -36,7 +40,7 @@ var get_view_count = exports.get_view_count = function (cb) {
   });
 };
 
-var get_tick_count = exports.get_tick_count = function (cb) {
+var get_tick_count = exports.get_tick_count = function (conn, cb) {
   var acc = {};
   r
   .table (event_tbl)
@@ -69,7 +73,7 @@ var get_tick_count = exports.get_tick_count = function (cb) {
   });
 };
 
-var insert_event = exports.insert_event = function (_event, cb) {
+var insert_event = exports.insert_event = function (conn, _event, cb) {
   r
   .table (event_tbl)
   .insert (_event)
@@ -78,11 +82,26 @@ var insert_event = exports.insert_event = function (_event, cb) {
   });
 };
 
-var _get_event = exports._get_event = function (id, cb) {
+var _get_event = exports._get_event = function (conn, id, cb) {
   r
   .table (event_tbl)
   .get (id)
   .run (conn, function (err, _event) {
     cb (err, _event);
+  });
+};
+
+var get_config = exports.get_config = function (conn, major, cb){
+  r
+  .table (conf_tbl)
+  .getAll (major)
+  .run (conn, function (err, cursor) {
+    if (err) {
+      cb (err);
+    } else {
+      cursor.toArray (function (err, config) {
+        cb (err, config);
+      });
+    }
   });
 };

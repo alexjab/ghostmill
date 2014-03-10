@@ -2,16 +2,19 @@ var redis = require ('redis');
 
 var db = require ('./db.js');
 
-var event_sub = redis.createClient ();
-event_sub.subscribe ('events');
+module.exports = function (conn) {
 
-event_sub.on ('message', function (channel, message) {
-  if (channel === 'events') {
-    var msg = JSON.parse (message);
-    msg.time = new Date ().getTime ();
-    db.insert_event (msg, function (err, stats) {
-      null;
-    });
-  }
-});
+  var event_sub = redis.createClient ();
+  event_sub.subscribe ('events');
 
+  event_sub.on ('message', function (channel, message) {
+    if (channel === 'events') {
+      var msg = JSON.parse (message);
+      msg.time = new Date ().getTime ();
+      db.insert_event (conn, msg, function (err, stats) {
+        null;
+      });
+    }
+  });
+
+};

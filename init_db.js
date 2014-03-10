@@ -10,7 +10,6 @@ async.series ([
   function (cb) {
     r.connect ({host: 'localhost', port: 28015}, function (err, connection) {
       conn = connection;
-      conn.use('ghostmill');
       cb (err);
     });
   },
@@ -18,6 +17,7 @@ async.series ([
     r
     .dbCreate ('ghostmill')
     .run (conn, function (err, stats) {
+      conn.use('ghostmill');
       cb (err, stats);
     });
   },
@@ -40,6 +40,14 @@ async.series ([
   function (cb) {
     r
     .db ('ghostmill')
+    .tableCreate ('config')
+    .run (conn, function (err, stats) {
+      cb (err, stats);
+    });
+  },
+  function (cb) {
+    r
+    .db ('ghostmill')
     .table ('events')
     .indexCreate ('type')
     .run (conn, function (err, stats) {
@@ -51,6 +59,15 @@ async.series ([
     .db ('ghostmill')
     .table ('test_events')
     .indexCreate ('type')
+    .run (conn, function (err, stats) {
+      cb (err, stats)
+    });
+  },
+  function (cb) {
+    r
+    .db ('ghostmill')
+    .table ('config')
+    .insert ([{'major': 'static', 'minor': 'use_j_query', 'value': true}, {'major': 'static', 'minor': 'use_socketio', 'value': true}])
     .run (conn, function (err, stats) {
       cb (err, stats)
     });
