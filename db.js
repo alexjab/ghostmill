@@ -2,7 +2,7 @@ var async = require ('async');
 var r = require('rethinkdb');
 
 var event_tbl = process.env.NODE_ENV === 'test'?'test_events':'events';
-var conf_tbl = process.env.NODE_ENV === 'test'?'test_conf':'conf';
+var conf_tbl = process.env.NODE_ENV === 'test'?'test_config':'config';
 
 exports.init = function (callback) {
   r.connect ({host: 'localhost', port: 28015, db: 'ghostmill'}, function (err, connection) {
@@ -91,15 +91,20 @@ var _get_event = exports._get_event = function (conn, id, cb) {
   });
 };
 
-var get_config = exports.get_config = function (conn, major, cb){
+var get_config = exports.get_config = function (conn, cb){
   r
   .table (conf_tbl)
-  .getAll (major)
   .run (conn, function (err, cursor) {
     if (err) {
       cb (err);
     } else {
-      cursor.toArray (function (err, config) {
+      var config = {};
+      cursor.each (function (err, c) {
+        if (!config[c.major]) {
+          config[c.major] = {};
+        }
+        config[c.major][c.minor] = c.value;
+      }, function () {
         cb (err, config);
       });
     }

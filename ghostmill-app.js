@@ -1,24 +1,26 @@
 var express = require ('express');
 
-var db = require ('./db.js').init (function (err, conn) {
-  if (err) {
-    throw Error (err);
-  } else {
+var db = require ('./db.js');
+
+db.init (function (err, conn) {
+  if (err) throw Error (err);
   
-    var app = express ();
+  var app = express ();
 
-    var server = require ('http').createServer (app);
-    var io  = require ('./io.js') (server);
+  var server = require ('http').createServer (app);
+  var io  = require ('./io.js') (server);
 
-    var conf = require ('./conf.js');
-
-    var js_file = require ('./js_file.js')(app, conn);
+  db.get_config (conn, function (err, config) {
+    if (err) throw Error (err);
+    var js_file = require ('./js_file.js')(app, conn, config);
     var js_report = require ('./js_report.js')(express, app, conn);
+  });
 
-    server.listen (conf.server.port);
+  var conf = require ('./conf.js');
 
-    var core = require ('./ghostmill-core.js')(conn);
+  server.listen (conf.server.port);
 
-  }
+  var core = require ('./ghostmill-core.js')(conn);
+
 });
 
