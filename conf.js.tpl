@@ -7,8 +7,5 @@ module.exports = {
   "auth": {
     "username": "admin",
     "password": "admin"
-  },
-  "selectors": [
-    //{'sel': '#button', 'e': 'click'},
-  ]
+  }
 };

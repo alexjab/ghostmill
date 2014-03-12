@@ -67,7 +67,10 @@ async.series ([
     r
     .db ('ghostmill')
     .table ('config')
-    .insert ([{'major': 'static', 'minor': 'use_jquery', 'value': true}, {'major': 'static', 'minor': 'use_socketio', 'value': true}])
+    .insert ([
+      {'major': 'static', 'minor': 'use_jquery', 'value': true},
+      {'major': 'static', 'minor': 'use_socketio', 'value': true}
+    ])
     .run (conn, function (err, stats) {
       cb (err, stats)
     });
