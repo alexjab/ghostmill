@@ -1,3 +1,4 @@
+var _ = require ('underscore');
 var async = require ('async');
 var redis = require ('redis');
 
@@ -11,13 +12,17 @@ module.exports = function (app, conn, config) {
 
   app.get ('/:url?/ghostmill.min.js', function (req, res) {
     var req_url = req.params.url || '/';
-    var req_ip = req.ip;
+    if (_.indexOf ((config.sites.pages || []), req_url) > -1) {
+      var req_ip = req.ip;
 
-    res.set('Content-Type', 'text/javascript');
-    res.send (_static.get_js_file (config, {'ip': req_ip, 'url': req_url}));
+      res.set('Content-Type', 'text/javascript');
+      res.send (_static.get_js_file (config, {'ip': req_ip, 'url': req_url}));
 
-    var e = {'type': 'view', 'ip': req_ip, 'url': req_url};
-    client.publish ('events', JSON.stringify (e));
+      var e = {'type': 'view', 'ip': req_ip, 'url': req_url};
+      client.publish ('events', JSON.stringify (e));
+    } else {
+      res.send (404, 'Not found.');
+    }
   });
 
 };

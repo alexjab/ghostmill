@@ -1,3 +1,4 @@
+var _ = require ('underscore');
 var async = require ('async');
 var r = require('rethinkdb');
 
@@ -117,10 +118,14 @@ var get_config = exports.get_config = function (conn, cb){
     } else {
       var config = {};
       cursor.each (function (err, c) {
-        if (!config[c.major]) {
+        if (config[c.major] === undefined) {
           config[c.major] = {};
         }
-        config[c.major][c.minor] = c.value;
+        if (_.isArray (config[c.major][c.minor])) {
+          config[c.major][c.minor].push (c.value);
+        } else {
+          config[c.major][c.minor] = c.value;
+        }
       }, function () {
         cb (err, config);
       });

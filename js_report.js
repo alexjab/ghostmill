@@ -32,7 +32,13 @@ module.exports = function (express, app, conn) {
         db.get_tick_count (conn, cb);
       }
     }, function (err, data) {
-      res.json (data);
+      data.total = _.reduce (data.views,
+        function (memo, value, key) {
+          memo.unique += value.unique;
+          memo.total += value.total;
+          return memo;
+        }, {'unique': 0, 'total': 0});
+      res.render ('report', {data: data});
     });
   
   });
