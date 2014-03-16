@@ -73,7 +73,6 @@ var get_tick_count = exports.get_tick_count = function (conn, cb) {
   .table (event_tbl)
   .getAll ("tick", {index: "type"})
   .pluck ("ip", "url", "sel", "event")
-  .distinct ()
   .map (function (row){ return {'url': row ('url'), 'event': row ('event'), 'sel': row ('sel')};})
   .run (conn, function (err, cursor){
     if (err) {
@@ -121,11 +120,7 @@ var get_config = exports.get_config = function (conn, cb){
         if (config[c.major] === undefined) {
           config[c.major] = {};
         }
-        if (_.isArray (config[c.major][c.minor])) {
-          config[c.major][c.minor].push (c.value);
-        } else {
-          config[c.major][c.minor] = c.value;
-        }
+        config[c.major][c.minor] = c.value;
       }, function () {
         cb (err, config);
       });

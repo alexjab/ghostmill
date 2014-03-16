@@ -10,6 +10,14 @@
     <div class="container">
       <!-- first row -->
       <div class="row">
+        <div class="col-lg-offset-3 col-lg-6">
+          <div class="align-center">
+            <h3>G H O S T M I L L &ndash; A N A L Y T I C S</h3>
+          </div>
+        </div>
+      </div>
+      <div class="row"><div class="col-lg-offset-3 col-lg-6"><hr/></div></div>
+      <div class="row">
         <div class="col-lg-offset-3 col-lg-3">
           <div class="align-center">
             <h4>TOTAL VISITORS</h4>
@@ -42,6 +50,21 @@
             </div>
           </div>
         </div>
+        <div class="row"><div class="col-lg-offset-3 col-lg-6"><h5>events &ndash; </h5></div></div>
+        <% _.each (data.ticks[view_name], function (tick_count, tick_event) { %>
+          <div class="row">
+            <div class="col-lg-offset-3 col-lg-3">
+              <div class="align-center">
+                <h4><%= tick_event %></h4>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="align-center">
+                <h4><%= tick_count %></h4>
+              </div>
+            </div>
+          </div>
+        <% }); %>
         <div class="row"><div class="col-lg-offset-3 col-lg-6"><hr/></div></div>
       <% }); %>
 

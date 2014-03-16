@@ -18,7 +18,7 @@ db.init (function (err, conn) {
   db.get_config (conn, function (err, config) {
     if (err) throw Error (err);
     var js_file = require ('./js_file.js')(app, conn, config);
-    var js_report = require ('./js_report.js')(express, app, conn);
+    var js_report = require ('./report.js')(express, app, conn);
   });
 
   var server = require ('http').createServer (app);
