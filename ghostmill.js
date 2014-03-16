@@ -18,7 +18,7 @@ var js_file = exports.js_file = function (req, res) {
     res.send (503, 'Server not ready');
   } else {
     var req_url = req.params.url || '/';
-    if (_.indexOf ((config.sites.pages || []), req_url) > -1) {
+    if (_.indexOf (config.site_allowed_pages, req_url) > -1) {
       var req_ip = req.ip;
 
       res.set('Content-Type', 'text/javascript');

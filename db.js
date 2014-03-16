@@ -115,14 +115,11 @@ var get_config = exports.get_config = function (conn, cb){
     if (err) {
       cb (err);
     } else {
-      var config = {};
-      cursor.each (function (err, c) {
-        if (config[c.major] === undefined) {
-          config[c.major] = {};
-        }
-        config[c.major][c.minor] = c.value;
-      }, function () {
-        cb (err, config);
+      var acc = {};
+      cursor.each (function (err, item) {
+        acc[item.key] = item.value;
+      }, function (err) {
+        cb (err, acc);
       });
     }
   });
