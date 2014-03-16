@@ -1,3 +1,14 @@
+#main {
+  color: #444;
+}
 .align-center {
   text-align: center;
+}
+
+.event-bulk {
+  color: #999;
+}
+
+.event-bulk:hover {
+  color: #444;
 }
