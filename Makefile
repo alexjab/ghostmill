@@ -18,16 +18,16 @@ init_db:
 all: install install_globals init
 
 start:
-	forever start ghostmill-app.js && forever start ghostmill-core.js
+	forever start ghostmill-app.js
 
 stop:
-	forever stop ghostmill-app.js && forever stop ghostmill-core.js
+	forever stop ghostmill-app.js
 
 kill:
-	forever kill ghostmill-app.js && forever kill ghostmill-core.js
+	forever kill ghostmill-app.js
 
 restart:
-	forever restart ghostmill-app.js && forever restart ghostmill-core.js
+	forever restart ghostmill-app.js
 
 test:
 	export NODE_ENV=test && mocha --ui bdd -R spec
