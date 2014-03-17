@@ -1,10 +1,14 @@
+var http = require ('http');
+var events = require ("events");
+
 var _ = require ('underscore');
 var express = require ('express');
 
 var db = require ('./db.js');
 var conf = require ('./conf.js');
+var io = require ('./io.js');
 
-var emitter = require ('./emitter.js');
+var emitter = new events.EventEmitter();
 
 db.init (function (err, conn) {
   if (err) throw Error (err);
@@ -28,11 +32,12 @@ app.set ('view engine', 'ejs');
 var ghostmill = require ('./ghostmill.js');
 ghostmill.init (emitter);
 
+app.get ('/', function (req, res) {res.redirect ('/report');});
 app.get ('/:url?/ghostmill.min.js', ghostmill.js_file);
 app.get ('/report', express.basicAuth (conf.auth.username, conf.auth.password), ghostmill.report);
 
-var server = require ('http').createServer (app);
-var io  = require ('./io.js') (server);
+var server = http.createServer (app);
+var io_server = io (server);
 
 server.listen (conf.server.port);
 
