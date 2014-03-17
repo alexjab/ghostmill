@@ -5,7 +5,7 @@ var async = require ('async');
 
 var db = require ('./db.js');
 
-var conf_path = process.env.NODE_ENV !== 'test'?'':'./test/data/';
+var conf_path = process.env.NODE_ENV !== 'test'?'./':'./test/data/';
 var data_path = process.env.NODE_ENV !== 'test'?'./js_data/':'./test/data/';
 
 var conf = require (conf_path+'conf.js');
